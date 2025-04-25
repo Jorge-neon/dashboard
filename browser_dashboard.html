@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Browser Environment Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue-gradient: linear-gradient(135deg, #4a90e2, #357ABD);
+            --green-gradient: linear-gradient(135deg, #43a047, #2e7d32);
+            --orange-gradient: linear-gradient(135deg, #fb8c00, #ef6c00);
+            --button-gradient: linear-gradient(45deg, #6a11cb, #2575fc);
+            --button-hover-gradient: linear-gradient(45deg, #2575fc, #6a11cb);
+            --text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            padding: 20px;
+            transition: background 1s ease;
+            color: #fff;
+            background: var(--blue-gradient);
+            min-height: 100vh;
+        }
+        body.bg-blue {
+            background: var(--blue-gradient);
+            color: white;
+        }
+        body.bg-green {
+            background: var(--green-gradient);
+            color: white;
+        }
+        body.bg-orange {
+            background: var(--orange-gradient);
+            color: white;
+        }
+        header {
+            background: rgba(255, 255, 255, 0.15);
+            color: inherit;
+            padding: 30px 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 40px;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        header:hover {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(-5px);
+        }
+        h1, h2, h3 {
+            margin: 0 0 10px 0;
+            font-weight: 700;
+            color: inherit;
+            text-shadow: var(--text-shadow);
+        }
+        section {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            color: inherit;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        section:hover {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            transform: translateY(-3px);
+        }
+        button {
+            background: var(--button-gradient);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 12px 25px;
+            margin: 5px 10px 5px 0;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(106, 17, 203, 0.6);
+            transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+            min-width: 130px;
+            user-select: none;
+        }
+        button:hover {
+            background: var(--button-hover-gradient);
+            box-shadow: 0 8px 30px rgba(37, 117, 252, 0.8);
+            transform: scale(1.05);
+        }
+        p {
+            margin: 8px 0;
+            font-size: 1.1rem;
+            color: inherit;
+            text-shadow: var(--text-shadow);
+        }
+        #nav-controls button {
+            min-width: 130px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>Student Profile</h2>
+        <p><strong>Complete Name:</strong> Juan Dela Cruz</p>
+        <p><strong>Sex:</strong> Male</p>
+        <p><strong>Address:</strong> 123 Mabuhay St., Quezon City</p>
+        <p><strong>Course, Year, and Section:</strong> BSEd 1A</p>
+        <p><strong>Name of School:</strong> State University</p>
+        <p><strong>Semester and Academic Year:</strong> 2nd Semester, AY 2024-2025</p>
+        <p><strong>Subject Code and Title:</strong> EDUC 123 - Technology for Teaching and Learning</p>
+        <p><strong>Name of Subject Instructor:</strong> Prof. Maria Santos</p>
+    </header>
+
+    <section id="browser-info">
+        <h3>Browser Information</h3>
+        <p id="browser"></p>
+        <p id="platform"></p>
+        <p id="java"></p>
+        <p id="resolution"></p>
+        <p id="availScreen"></p>
+        <p id="colorDepth"></p>
+    </section>
+
+    <section id="page-info">
+        <h3>Page Information and Controls</h3>
+        <p id="url"></p>
+        <p id="hostname"></p>
+        <p id="title"></p>
+        <button onclick="changeTitle()">Change Page Title</button>
+    </section>
+
+    <section id="nav-controls">
+        <h3>Navigation Controls</h3>
+        <button onclick="location.reload()">Reload Page</button>
+        <button onclick="redirectTo()">Redirect to URL</button>
+        <button onclick="history.back()">Go Back</button>
+        <button onclick="history.forward()">Go Forward</button>
+    </section>
+
+    <script>
+        document.getElementById("browser").innerText = `Browser: ${navigator.appName} ${navigator.appVersion}`;
+        document.getElementById("platform").innerText = `Platform: ${navigator.platform}`;
+        document.getElementById("java").innerText = `Java Enabled: ${navigator.javaEnabled()}`;
+        document.getElementById("resolution").innerText = `Screen Resolution: ${screen.width} x ${screen.height}`;
+        document.getElementById("availScreen").innerText = `Available Screen Size: ${screen.availWidth} x ${screen.availHeight}`;
+        document.getElementById("colorDepth").innerText = `Color Depth: ${screen.colorDepth}`;
+
+        document.getElementById("url").innerText = `URL: ${location.href}`;
+        document.getElementById("hostname").innerText = `Hostname: ${location.hostname}`;
+        document.getElementById("title").innerText = `Page Title: ${document.title}`;
+
+        function changeTitle() {
+            let newTitle = prompt("Enter a new page title:");
+            if (newTitle) {
+                document.title = newTitle;
+                document.getElementById("title").innerText = `Page Title: ${document.title}`;
+            }
+        }
+
+        function redirectTo() {
+            let url = prompt("Enter the URL to redirect to:");
+            if (url) {
+                 // Check if the URL already starts with http:// or https://
+        if (!/^https?:\/\//i.test(url)) {
+            url = "https://" + url;
+            }
+                location.href = url;
+            }
+        }
+
+        function setBackgroundColor() {
+            let width = window.innerWidth;
+            document.body.classList.remove('bg-blue', 'bg-green', 'bg-orange');
+            if (width < 600) {
+                document.body.classList.add('bg-blue');
+            } else if (width >= 601 && width < 992) {
+                document.body.classList.add('bg-green');
+            } else {
+                document.body.classList.add('bg-orange');
+            }
+        }
+
+        setBackgroundColor();
+        window.onresize = setBackgroundColor;
+    </script>
+</body>
+</html>

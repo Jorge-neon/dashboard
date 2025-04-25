@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Word Guessing Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue-gradient: linear-gradient(135deg, #4a90e2, #357ABD);
+      --green-gradient: linear-gradient(135deg, #43a047, #2e7d32);
+      --orange-gradient: linear-gradient(135deg, #fb8c00, #ef6c00);
+      --button-gradient: linear-gradient(45deg, #6a11cb, #2575fc);
+      --button-hover-gradient: linear-gradient(45deg, #2575fc, #6a11cb);
+      --text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      text-align: center;
+      margin: 50px auto;
+      max-width: 480px;
+      border-radius: 20px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+      padding: 40px 30px;
+      transition: background 1s ease;
+      color: #fff;
+      background: var(--blue-gradient);
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    body.bg-blue {
+      background: var(--blue-gradient);
+      color: white;
+    }
+    body.bg-green {
+      background: var(--green-gradient);
+      color: white;
+    }
+    body.bg-orange {
+      background: var(--orange-gradient);
+      color: white;
+    }
+    h1 {
+      font-weight: 700;
+      font-size: 3rem;
+      margin-bottom: 10px;
+      color: inherit;
+      text-shadow: var(--text-shadow);
+    }
+    h2 {
+      font-weight: 400;
+      font-size: 1.3rem;
+      margin-bottom: 30px;
+      color: inherit;
+      text-shadow: var(--text-shadow);
+    }
+    #hint {
+      font-style: italic;
+      margin-bottom: 25px;
+      color: inherit;
+      text-shadow: var(--text-shadow);
+    }
+    input {
+      padding: 20px 20px;
+      font-size: 1.2rem;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      border-radius: 40px;
+      width: 80%;
+      align-self: center;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      outline: none;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    input:focus {
+      border-color: rgba(255, 255, 255, 1);
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.25);
+    }
+    button {
+      padding: 15px 30px;
+      margin-left: 15px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 40px;
+      background: var(--button-gradient);
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(106, 17, 203, 0.6);
+      transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+      min-width: 110px;
+      user-select: none;
+    }
+    button:hover {
+      background: var(--button-hover-gradient);
+      box-shadow: 0 8px 30px rgba(37, 117, 252, 0.8);
+      transform: scale(1.05);
+    }
+    #message {
+      margin-top: 30px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      min-height: 50px;
+      transition: color 0.4s ease;
+      text-shadow: var(--text-shadow);
+    }
+    #message.win {
+      color: #a5d6a7; /* light green */
+      text-shadow: 0 0 8px #81c784;
+    }
+    #message.lose {
+      color: #ef9a9a; /* light red */
+      text-shadow: 0 0 8px #e57373;
+    }
+  </style>
+</head>
+<body>
+  <h1>Word Guessing Game</h1>
+  <h2>Jorge Ellise Enon BSIT-2B</h2>
+  <p id="hint"></p>
+  <input type="text" id="guessInput" placeholder="Enter your guess" />
+  <div style="margin-top: 20px;">
+    <button onclick="checkGuess()">Submit</button>
+    <button onclick="restartGame()">Restart</button>
+  </div>
+  <div id="message"></div>
+
+  <script>
+    const words = ["apple", "banana", "grape", "mango", "orange", "lemon", "watermelon", "pineapple", "papaya",
+              "strawberry", "coconot", "pomelo", "avocado", "blueberry"];
+    let secretWord;
+    let maxAttempts = 5;
+    let attemptsLeft;
+    let gameOver = false;
+
+    const message = document.getElementById("message");
+    const hint = document.getElementById("hint");
+    const input = document.getElementById("guessInput");
+
+    function chooseRandomWord() {
+      return words[Math.floor(Math.random() * words.length)];
+    }
+
+    function initializeGame() {
+      secretWord = chooseRandomWord();
+      attemptsLeft = maxAttempts;
+      gameOver = false;
+      message.textContent = "";
+      message.className = "";
+      input.value = "";
+      document.body.style.backgroundColor = "";
+      hint.textContent = `Hint: The word starts with '${secretWord.charAt(0).toUpperCase()}'`;
+    }
+
+    function checkGuess() {
+      if (gameOver) return;
+
+      let userGuess = input.value.trim().toLowerCase();
+      input.value = "";
+
+      if (!userGuess) {
+        attemptsLeft--;
+        message.textContent = `Incorrect guess. You have ${attemptsLeft} attempts left. Try again!`;
+        message.className = "lose";
+      } else if (userGuess === secretWord.toLowerCase()) {
+        message.textContent = "🎉 Congratulations! You guessed the secret word!";
+        message.className = "win";
+        document.body.style.backgroundColor = "#a2f5a2"; // green for win
+        gameOver = true;
+      } else {
+        attemptsLeft--;
+        if (attemptsLeft > 0) {
+          message.textContent = `Incorrect guess. You have ${attemptsLeft} attempts left. Try again!`;
+          message.className = "lose";
+        } else {
+          message.textContent = `💀 Game over! The secret word was '${secretWord}'.`;
+          message.className = "lose";
+          document.body.style.backgroundColor = "#f5a2a2"; // red for loss
+          gameOver = true;
+        }
+      }
+    }
+
+    function restartGame() {
+      initializeGame();
+    }
+
+    input.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        checkGuess();
+      }
+    });
+
+    // Start the game initially
+    initializeGame();
+
+    function setBackgroundColor() {
+      let width = window.innerWidth;
+      document.body.classList.remove('bg-blue', 'bg-green', 'bg-orange');
+      if (width < 600) {
+          document.body.classList.add('bg-blue');
+      } else if (width >= 601 && width < 992) {
+          document.body.classList.add('bg-green');
+      } else {
+          document.body.classList.add('bg-orange');
+      }
+    }
+    setBackgroundColor();
+    window.onresize = setBackgroundColor;
+  </script>
+</body>
+</html>
