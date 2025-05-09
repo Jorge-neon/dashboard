@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOM Traversal Application</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    header {
+      margin-bottom: 30px;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 10px;
+      text-align: center;
+    }
+
+    .node {
+      padding: 10px;
+      margin: 10px;
+      border: 1px solid #000;
+      cursor: pointer;
+    }
+
+    .grandparent {
+      background-color: #fff3cd; /* light yellow */
+    }
+
+    .parent {
+      background-color: #cfe2ff; /* light blue */
+      margin-left: 20px;
+    }
+
+    .child {
+      background-color: #f8d7da; /* light pink */
+      margin-left: 40px;
+    }
+
+    .highlight {
+      border: 3px solid red;
+    }
+
+    .controls button {
+      margin: 5px;
+      padding: 10px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Student Profile</h1>
+    <p><strong>Complete Name:</strong> Juan Dela Cruz</p>
+    <p><strong>Sex:</strong> Male</p>
+    <p><strong>Address:</strong> Manila, Philippines</p>
+    <p><strong>Course, Year, and Section:</strong> BSEd 1A</p>
+    <p><strong>Name of School:</strong> State University</p>
+    <p><strong>Semester and Academic Year:</strong> 2nd Semester, A.Y. 2024-2025</p>
+    <p><strong>Subject Code and Title:</strong> EDU 123 - Educational Technology</p>
+    <p><strong>Name of Subject Instructor:</strong> Prof. Maria Santos</p>
+  </header>
+
+  <div id="tree">
+    <div class="node grandparent">Grandparent
+      <div class="node parent">Parent 1
+        <div class="node child">Child 1</div>
+        <div class="node child">Child 2</div>
+      </div>
+      <div class="node parent">Parent 2
+        <div class="node child">Child 3</div>
+        <div class="node child">Child 4</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button onclick="traverseDown()">Traverse Down</button>
+    <button onclick="traverseUp()">Traverse Up</button>
+    <button onclick="traverseNext()">Next Sibling</button>
+    <button onclick="traversePrev()">Previous Sibling</button>
+    <button onclick="addChild()">Add Child</button>
+    <button onclick="deleteNode()">Delete Node</button>
+  </div>
+
+  <script>
+    let selectedNode = null;
+    let childCounter = 5;
+
+    document.querySelectorAll('.node').forEach(node => {
+      node.addEventListener('click', function (e) {
+        e.stopPropagation();
+        selectNode(this);
+      });
+    });
+
+    function selectNode(node) {
+      if (selectedNode) {
+        selectedNode.classList.remove('highlight');
+      }
+      selectedNode = node;
+      selectedNode.classList.add('highlight');
+    }
+
+    function traverseDown() {
+      if (!selectedNode) return;
+      const firstChild = selectedNode.querySelector('.node');
+      if (firstChild) selectNode(firstChild);
+    }
+
+    function traverseUp() {
+      if (!selectedNode) return;
+      const parent = selectedNode.parentElement.closest('.node');
+      if (parent) selectNode(parent);
+    }
+
+    function traverseNext() {
+      if (!selectedNode) return;
+      let next = selectedNode.nextElementSibling;
+      while (next && !next.classList.contains('node')) {
+        next = next.nextElementSibling;
+      }
+      if (next) selectNode(next);
+    }
+
+    function traversePrev() {
+      if (!selectedNode) return;
+      let prev = selectedNode.previousElementSibling;
+      while (prev && !prev.classList.contains('node')) {
+        prev = prev.previousElementSibling;
+      }
+      if (prev) selectNode(prev);
+    }
+
+    function addChild() {
+      if (!selectedNode) return;
+
+      if (selectedNode.classList.contains('grandparent')) {
+        const newParent = document.createElement('div');
+        newParent.className = 'node parent';
+        newParent.textContent = 'New Parent';
+
+        for (let i = 0; i < 2; i++) {
+          const newChild = document.createElement('div');
+          newChild.className = 'node child';
+          newChild.textContent = `Child ${childCounter++}`;
+          newChild.addEventListener('click', function (e) {
+            e.stopPropagation();
+            selectNode(this);
+          });
+          newParent.appendChild(newChild);
+        }
+
+        newParent.addEventListener('click', function (e) {
+          e.stopPropagation();
+          selectNode(this);
+        });
+
+        selectedNode.appendChild(newParent);
+
+      } else if (selectedNode.classList.contains('parent')) {
+        const newChild = document.createElement('div');
+        newChild.className = 'node child';
+        newChild.textContent = `Child ${childCounter++}`;
+        newChild.addEventListener('click', function (e) {
+          e.stopPropagation();
+          selectNode(this);
+        });
+        selectedNode.appendChild(newChild);
+
+      } else {
+        alert("Cannot add a child to a child node.");
+      }
+    }
+
+    function deleteNode() {
+      if (!selectedNode) return;
+
+      if (selectedNode.classList.contains('grandparent')) {
+        alert("Cannot delete the grandparent node.");
+        return;
+      }
+
+      const parent = selectedNode.parentElement;
+      parent.removeChild(selectedNode);
+      selectedNode = null;
+    }
+  </script>
+</body>
+</html>
