@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Canvas Shape Editor</title>
+  <style>
+    :root {
+      --blue-gradient: linear-gradient(135deg, #4a90e2, #357ABD);
+      --green-gradient: linear-gradient(135deg, #43a047, #2e7d32);
+      --orange-gradient: linear-gradient(135deg, #fb8c00, #ef6c00);
+      --button-gradient: linear-gradient(45deg, #6a11cb, #2575fc);
+      --button-hover-gradient: linear-gradient(45deg, #2575fc, #6a11cb);
+      --text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      padding: 20px;
+      transition: background 1s ease;
+      color: #fff;
+      background: var(--blue-gradient);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    body.bg-blue {
+      background: var(--blue-gradient);
+    }
+    body.bg-green {
+      background: var(--green-gradient);
+    }
+    body.bg-orange {
+      background: var(--orange-gradient);
+    }
+
+    header {
+      background: rgba(255, 255, 255, 0.15);
+      color: inherit;
+      padding: 30px 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      margin-bottom: 30px;
+      max-width: 600px;
+      width: 100%;
+      backdrop-filter: blur(10px);
+      text-align: center;
+    }
+
+    header:hover {
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+      transform: translateY(-5px);
+    }
+
+    h2 {
+      margin-top: 0;
+      font-weight: 700;
+      font-size: 2.5rem;
+      letter-spacing: 2px;
+      text-shadow: var(--text-shadow);
+    }
+
+    p {
+      margin: 8px 0;
+      font-weight: 500;
+      font-size: 1.1rem;
+      text-shadow: var(--text-shadow);
+    }
+
+    canvas {
+      border: 2px solid #ffffff;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 15px;
+      }
+
+      header {
+        padding: 20px 25px;
+        box-shadow: none;
+      }
+
+      canvas {
+        width: 100%;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h2>Complete Name: Jorge ELlise M. ENon</h2>
+    <p>Sex: Male</p>
+    <p>Address: San Ramon Lagonoy Camarines Sur</p>
+    <p>Course, Year, and Section: BSIT 2B</p>
+    <p>Name of School: Partido State University</p>
+    <p>Semester and Academic Year: 2nd Semester, AY 2024-2025</p>
+    <p>Subject Code and Title: PF2 Event Driven Programming</p>
+    <p>Instructor: Prof. Arjay Abio</p>
+  </header>
+
+  <canvas id="myCanvas" width="600" height="400"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>
