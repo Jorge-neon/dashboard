@@ -4,37 +4,100 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DOM Traversal Application</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --blue-gradient: linear-gradient(135deg, #4a90e2, #357ABD);
+      --green-gradient: linear-gradient(135deg, #43a047, #2e7d32);
+      --orange-gradient: linear-gradient(135deg, #fb8c00, #ef6c00);
+      --text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
+      font-family: 'Poppins', sans-serif;
+      background: var(--blue-gradient);
+      color: #fff;
+      padding: 30px 15px;
+      min-height: 100vh;
+      transition: background 1s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    body.bg-blue {
+      background: var(--blue-gradient);
+    }
+
+    body.bg-green {
+      background: var(--green-gradient);
+    }
+
+    body.bg-orange {
+      background: var(--orange-gradient);
     }
 
     header {
-      margin-bottom: 30px;
-      border-bottom: 2px solid #ccc;
-      padding-bottom: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
       text-align: center;
+      margin-bottom: 30px;
+      backdrop-filter: blur(10px);
+      max-width: 700px;
+      width: 100%;
+    }
+
+    header:hover {
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+      transform: translateY(-5px);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-shadow: var(--text-shadow);
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin: 6px 0;
+      text-shadow: var(--text-shadow);
+    }
+
+    #tree {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+      max-width: 700px;
+      width: 100%;
     }
 
     .node {
-      padding: 10px;
+      padding: 10px 15px;
       margin: 10px;
-      border: 1px solid #000;
+      border: 2px solid #fff;
+      border-radius: 8px;
       cursor: pointer;
+      color: #000;
+      font-weight: 600;
     }
 
     .grandparent {
-      background-color: #fff3cd; /* light yellow */
+      background-color: #fff3cd;
     }
 
     .parent {
-      background-color: #cfe2ff; /* light blue */
+      background-color: #cfe2ff;
       margin-left: 20px;
     }
 
     .child {
-      background-color: #f8d7da; /* light pink */
+      background-color: #f8d7da;
       margin-left: 40px;
     }
 
@@ -42,10 +105,42 @@
       border: 3px solid red;
     }
 
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      max-width: 700px;
+      width: 100%;
+    }
+
     .controls button {
-      margin: 5px;
-      padding: 10px;
+      padding: 12px 18px;
       font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(45deg, #6a11cb, #2575fc);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .controls button:hover {
+      background: linear-gradient(45deg, #2575fc, #6a11cb);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 600px) {
+      header, #tree, .controls {
+        padding: 20px;
+        border-radius: 10px;
+      }
+
+      .controls button {
+        flex: 1 1 45%;
+      }
     }
   </style>
 </head>
@@ -85,6 +180,20 @@
   </div>
 
   <script>
+    function setBackgroundColor() {
+      const width = window.innerWidth;
+      document.body.classList.remove('bg-blue', 'bg-green', 'bg-orange');
+      if (width < 600) {
+        document.body.classList.add('bg-blue');
+      } else if (width < 992) {
+        document.body.classList.add('bg-green');
+      } else {
+        document.body.classList.add('bg-orange');
+      }
+    }
+    setBackgroundColor();
+    window.addEventListener('resize', setBackgroundColor);
+
     let selectedNode = null;
     let childCounter = 5;
 
